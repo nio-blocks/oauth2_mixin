@@ -68,6 +68,10 @@ class OAuth2():
         raise OAuth2Exception("Could not extract token from response {0}"
                               .format(r.text))
 
+    def get_access_token_headers(self, access_token):
+        """ Get the HTTP Request headers for a given access token """
+        return {"Authorization": "Bearer {0}".format(access_token)}
+
     def _load_json_file(self):
         """ Loads the configured JSON file with private key information """
         json_data = dict()
