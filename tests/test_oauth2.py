@@ -1,7 +1,6 @@
 from ..oauth2 import OAuth2, OAuth2Exception
 from nio.common.block.base import Block
 from nio.util.support.block_test_case import NIOBlockTestCase
-from nio.modules.threading import sleep
 
 
 class OAuthBlock(OAuth2, Block):
@@ -18,11 +17,6 @@ class TestOAuth2Mixin(NIOBlockTestCase):
 
         token = block.get_access_token(
             'https://www.googleapis.com/auth/analytics.readonly')
-
-        print(token.token)
-        sleep(300)
-        token.refresh()
-        print(token.token)
 
         self.assertIsNotNone(token)
 
