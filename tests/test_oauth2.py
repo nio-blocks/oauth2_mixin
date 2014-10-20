@@ -23,7 +23,7 @@ class TestOAuth2Mixin(NIOBlockTestCase):
     def test_bad_scope(self):
         block = OAuthBlock()
         self.configure_block(block, {
-            "key_config_file": "tests/GoBuffs-e254fba1cd4a.json"
+            "key_config_file": "tests/KEY_FILE_GOES_HERE.json"
         })
 
         with self.assertRaises(OAuth2Exception):
