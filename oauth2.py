@@ -1,6 +1,7 @@
 import json
 import requests
-from os.path import join, dirname, realpath
+from os.path import join, dirname, realpath, isfile
+from nio.util.environment import NIOEnvironment
 from nio.metadata.properties import StringProperty
 
 # Dependency found at:
@@ -35,6 +36,9 @@ class OAuth2():
             OAuth2Exception: If the token request fails for any reason
         """
         key_info = self._load_json_file()
+
+        if key_info is None:
+            raise OAuth2Exception("Invalid Key File")
 
         cred = SignedJwtAssertionCredentials(
             key_info.get('client_email', ''),
@@ -74,9 +78,36 @@ class OAuth2():
 
     def _load_json_file(self):
         """ Loads the configured JSON file with private key information """
-        json_data = dict()
-        with open(join(dirname(realpath(__file__)),
-                       self.key_config_file)) as json_file:
+
+        # Let's figure out where the file is
+        filename = self._get_valid_file(
+
+            # First, just see if it's maybe already a file?
+            self.key_config_file,
+
+            # Next, try in the NIO environment
+            NIOEnvironment.get_path(self.key_config_file),
+
+            # Finally, try relative to the current file
+            join(dirname(realpath(__file__)), self.key_config_file),
+        )
+
+        if filename is None:
+            self._logger.error(
+                "Could not find key file {0}. Should be an absolute path or "
+                "relative to the current environment.".format(
+                    self.key_config_file))
+            return None
+
+        with open(filename) as json_file:
             json_data = json.load(json_file)
 
         return json_data
+
+    def _get_valid_file(self, *args):
+        """ Go through args and return the first valid file, None if none are.
+        """
+        for arg in args:
+            if isfile(arg):
+                return arg
+        return None
