@@ -1,2 +1,2 @@
 requests
-https://github.com/google/oauth2client/tree/python3
+oauth2client
