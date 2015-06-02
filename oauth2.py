@@ -23,6 +23,12 @@ class OAuth2():
 
     _token_request_url = 'https://accounts.google.com/o/oauth2/token'
 
+    def configure(self, context):
+        super().configure(context)
+        self._logger.warning("DEPRECATION WARNING")
+        self._logger.warning("This mixin has been deprecated. Consider using"
+                             "the OAuth2ServiceAccount mixin in your block")
+
     def get_access_token(self, scope=''):
         """ Obtain an access token for the specified scope
 
