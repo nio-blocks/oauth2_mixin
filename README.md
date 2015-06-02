@@ -3,8 +3,8 @@
 A collection of block mixins to enable OAuth 2.0 support in your blocks.
 
 Here are the currently supported mixin classes:
- * [OAuth2ServiceAccount](#OAuth2ServiceAccount)
- * [OAuth2PasswordGrant](#OAuth2PasswordGrant)
+ * [OAuth2ServiceAccount](#oauth2serviceaccount)
+ * [OAuth2PasswordGrant](#oauth2passwordgrant)
 
 ## Usage
 
