@@ -1,8 +1,10 @@
 import requests
-from nio.metadata.properties import StringProperty
+from nio.properties import StringProperty
 from .oauth2_base import OAuth2Base, OAuth2Exception
 
-from oauth2client.client import SignedJwtAssertionCredentials
+# consider changing this:
+# https://github.com/google/oauth2client/blob/f322ef9cdf59d5e4db310baeec2224b914d468c5/CHANGELOG.md
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 class OAuth2ServiceAccount(OAuth2Base):
@@ -25,14 +27,14 @@ class OAuth2ServiceAccount(OAuth2Base):
         Raises:
             OAuth2Exception: If the token request fails for any reason
         """
-        key_info = self._load_json_file(self.key_config_file)
+        key_info = self._load_json_file(self.key_config_file())
 
         if key_info is None:
             raise OAuth2Exception("Invalid Key File")
 
-        cred = SignedJwtAssertionCredentials(
+        cred = ServiceAccountCredentials(
             key_info.get('client_email', ''),
-            key_info.get('private_key', '').encode('utf-8'),
+            self.key_config_file(),
             scope)
 
         # Request a new token from the token request URL

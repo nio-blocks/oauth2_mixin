@@ -1,6 +1,5 @@
 import json
 from os.path import join, dirname, realpath, isfile
-from nio.util.environment import NIOEnvironment
 
 
 class OAuth2Exception(Exception):
@@ -68,7 +67,7 @@ class OAuth2Base():
         try:
             token = response.json()
         except:
-            self._logger.warning("Token is not JSON parseable")
+            self.logger.warning("Token is not JSON parseable")
             token = response.text
 
         self._oauth_token = token
@@ -77,19 +76,6 @@ class OAuth2Base():
 
     def _load_json_file(self, filename):
         """ Loads the configured JSON filename """
-
-        # Let's figure out where the file is
-        filename = self._get_valid_file(
-
-            # First, just see if it's maybe already a file?
-            filename,
-
-            # Next, try in the NIO environment
-            NIOEnvironment.get_path(filename),
-
-            # Finally, try relative to the current file
-            join(dirname(realpath(__file__)), filename),
-        )
 
         if filename is None:
             raise OAuth2Exception(
