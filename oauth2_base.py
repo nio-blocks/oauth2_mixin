@@ -77,7 +77,7 @@ class OAuth2Base():
     def _load_json_file(self, filename):
         """ Loads the configured JSON filename """
 
-        if filename is None:
+        if filename.file is None:
             raise OAuth2Exception(
                 "Could not find key file {0}. Should be an absolute path or "
                 "relative to the current environment.".format(
@@ -85,11 +85,3 @@ class OAuth2Base():
 
         with open(filename) as json_file:
             return json.load(json_file)
-
-    def _get_valid_file(self, *args):
-        """ Go through args and return the first valid file, None if none are.
-        """
-        for arg in args:
-            if isfile(arg):
-                return arg
-        return None

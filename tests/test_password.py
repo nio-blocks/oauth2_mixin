@@ -33,7 +33,7 @@ class TestOAuth2PasswordGrant(NIOBlockTestCase):
             'Authorization': 'Bearer foobar'
         })
 
-        get_token.assertCalledOnceWith(
+        get_token.assert_called_once_with(
             'http://oauthbase/token',
             data={
                 'username': 'user',
@@ -65,7 +65,7 @@ class TestOAuth2PasswordGrant(NIOBlockTestCase):
             'Authorization': 'Bearer foobar'
         })
 
-        get_token.assertCalledOnceWith(
+        get_token.assert_called_once_with(
             'http://oauthbase/token',
             data={
                 'username': 'user',
