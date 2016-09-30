@@ -83,5 +83,5 @@ class OAuth2Base():
                 "relative to the current environment.".format(
                     self.key_config_file))
 
-        with open(filename) as json_file:
+        with open(filename.file) as json_file:
             return json.load(json_file)
