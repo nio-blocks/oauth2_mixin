@@ -30,23 +30,30 @@ class OAuth2ServiceAccount(OAuth2Base):
         key_info = self._load_json_file(self.key_config_file())
 
         if key_info is None:
-            raise OAuth2Exception("Invalid Key File")
+            raise OAuth2Exception("Invalid Key File: %s" %
+                                  self.key_config_file())
 
-        cred = ServiceAccountCredentials(
-            key_info.get('client_email', ''),
-            self.key_config_file(),
-            scope)
+        # 'invalid_grant' error unless the correct token_uri is passed.
+        # try either of these:
+        # https://accounts.google.com/o/oauth2/token
+        # https://www.googleapis.com/oauth2/v4/token
+        cred = ServiceAccountCredentials.from_json_keyfile_dict(key_info,
+               token_uri='https://accounts.google.com/o/oauth2/token',
+               scopes=scope)
 
         # Request a new token from the token request URL
         token_url = self.get_oauth_url(token_endpoint)
+
         try:
             r = requests.post(
                 token_url,
                 data=cred._generate_refresh_request_body(),
                 headers=cred._generate_refresh_request_headers()
             )
-        except:
-            raise OAuth2Exception("Could not complete request to {0}".format(
-                token_url))
+        except Exception as e:
+            # raise OAuth2Exception("Could not complete request to {0}".format(
+            #     token_url))
+            raise OAuth2Exception("Could not complete request to %s: %s %s %s"
+                                  % (token_url, cred, key_info, e))
 
         return self.parse_token_from_response(r)
