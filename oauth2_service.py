@@ -51,8 +51,6 @@ class OAuth2ServiceAccount(OAuth2Base):
                 headers=cred._generate_refresh_request_headers()
             )
         except Exception as e:
-            # raise OAuth2Exception("Could not complete request to {0}".format(
-            #     token_url))
             raise OAuth2Exception("Could not complete request to %s: %s %s %s"
                                   % (token_url, cred, key_info, e))
 
