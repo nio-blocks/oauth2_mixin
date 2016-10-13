@@ -14,7 +14,10 @@ class TestOAuth2ServiceAccount(NIOBlockTestCase):
 
     @patch.object(OAuth2ServiceAccount, '_load_json_file',
                   return_value={'client_email': 'foo@bar.gov',
-                                'private_key': 'WhatAKey'})
+                                'private_key': 'WhatAKey',
+                                'type': 'service_account',
+                                'private_key_id': 'WhatAnID',
+                                'client_id': 'WhatAClientID'})
     @patch('requests.post')
     @patch('oauth2client.service_account.ServiceAccountCredentials.'
            '_generate_refresh_request_body')
