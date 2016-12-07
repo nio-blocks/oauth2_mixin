@@ -1,8 +1,8 @@
 from unittest.mock import patch, MagicMock
 from requests import Response
 from ..oauth2_password import OAuth2PasswordGrant
-from nio.common.block.base import Block
-from nio.util.support.block_test_case import NIOBlockTestCase
+from nio.block.base import Block
+from nio.testing.block_test_case import NIOBlockTestCase
 
 
 class OAuthBlock(OAuth2PasswordGrant, Block):
@@ -33,7 +33,7 @@ class TestOAuth2PasswordGrant(NIOBlockTestCase):
             'Authorization': 'Bearer foobar'
         })
 
-        get_token.assertCalledOnceWith(
+        get_token.assert_called_once_with(
             'http://oauthbase/token',
             data={
                 'username': 'user',
@@ -65,7 +65,7 @@ class TestOAuth2PasswordGrant(NIOBlockTestCase):
             'Authorization': 'Bearer foobar'
         })
 
-        get_token.assertCalledOnceWith(
+        get_token.assert_called_once_with(
             'http://oauthbase/token',
             data={
                 'username': 'user',

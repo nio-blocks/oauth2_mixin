@@ -2,8 +2,8 @@ from unittest.mock import patch, MagicMock
 from requests import Response
 from ..oauth2_base import OAuth2Exception
 from ..oauth2_service import OAuth2ServiceAccount
-from nio.common.block.base import Block
-from nio.util.support.block_test_case import NIOBlockTestCase
+from nio.block.base import Block
+from nio.testing.block_test_case import NIOBlockTestCase
 
 
 class OAuthBlock(OAuth2ServiceAccount, Block):
@@ -14,11 +14,14 @@ class TestOAuth2ServiceAccount(NIOBlockTestCase):
 
     @patch.object(OAuth2ServiceAccount, '_load_json_file',
                   return_value={'client_email': 'foo@bar.gov',
-                                'private_key': 'WhatAKey'})
+                                'private_key': 'WhatAKey',
+                                'type': 'service_account',
+                                'private_key_id': 'WhatAnID',
+                                'client_id': 'WhatAClientID'})
     @patch('requests.post')
-    @patch('oauth2client.client.SignedJwtAssertionCredentials.'
+    @patch('oauth2client.service_account.ServiceAccountCredentials.'
            '_generate_refresh_request_body')
-    @patch('oauth2client.client.SignedJwtAssertionCredentials.'
+    @patch('oauth2client.service_account.ServiceAccountCredentials.'
            '_generate_refresh_request_headers')
     def test_token(self, mock_head, mock_bod, mock_post, mock_load):
 
