@@ -4,8 +4,10 @@ from ..oauth2_base import OAuth2Exception
 from ..oauth2_service import OAuth2ServiceAccount
 from nio.block.base import Block
 from nio.testing.block_test_case import NIOBlockTestCase
+from nio.util.discovery import not_discoverable
 
 
+@not_discoverable
 class OAuthBlock(OAuth2ServiceAccount, Block):
     pass
 

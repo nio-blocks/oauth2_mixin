@@ -3,8 +3,10 @@ from requests import Response
 from ..oauth2_password import OAuth2PasswordGrant
 from nio.block.base import Block
 from nio.testing.block_test_case import NIOBlockTestCase
+from nio.util.discovery import not_discoverable
 
 
+@not_discoverable
 class OAuthBlock(OAuth2PasswordGrant, Block):
 
     def get_oauth_base_url(self):
