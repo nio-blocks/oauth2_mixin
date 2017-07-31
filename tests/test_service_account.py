@@ -21,11 +21,9 @@ class TestOAuth2ServiceAccount(NIOBlockTestCase):
                                 'private_key_id': 'WhatAnID',
                                 'client_id': 'WhatAClientID'})
     @patch('requests.post')
-    @patch('oauth2client.service_account.ServiceAccountCredentials.'
-           '_generate_refresh_request_body')
-    @patch('oauth2client.service_account.ServiceAccountCredentials.'
-           '_generate_refresh_request_headers')
-    def test_token(self, mock_head, mock_bod, mock_post, mock_load):
+    @patch.object(OAuth2ServiceAccount, 'get_access_token',
+                  return_value={'access_token': 'foobar'})
+    def test_token(self, mock_head, mock_post, mock_service_creds):
 
         # mock out the token request response
         the_response = Response()
@@ -42,6 +40,11 @@ class TestOAuth2ServiceAccount(NIOBlockTestCase):
             'https://www.googleapis.com/auth/analytics.readonly')
 
         self.assertEqual(token['access_token'], 'foobar')
+        
+        # Oauth2ServiceAccount.get_access_token is mocked, but the method
+        # assigns self._oauth_token inside of the method.
+        # Need to assign it here before checking block.get_access_token_headers
+        block._oauth_token = {'access_token': 'foobar'}
         self.assertEqual(block.get_access_token_headers(), {
             'Authorization': 'Bearer foobar'
         })
