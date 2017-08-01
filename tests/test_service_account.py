@@ -40,9 +40,10 @@ class TestOAuth2ServiceAccount(NIOBlockTestCase):
             'https://www.googleapis.com/auth/analytics.readonly')
 
         self.assertEqual(token['access_token'], 'foobar')
-        
-        # Oauth2ServiceAccount.get_access_token is mocked, but the method
-        # assigns self._oauth_token inside of the method.
+
+        # Oauth2ServiceAccount.get_access_token is mocked, so
+        # Oauth2ServiceAccount.parse_token_from_response(r) is never calle, and
+        # self._oauth_token is never assigned.
         # Need to assign it here before checking block.get_access_token_headers
         block._oauth_token = {'access_token': 'foobar'}
         self.assertEqual(block.get_access_token_headers(), {
