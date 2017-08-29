@@ -1,5 +1,4 @@
 import json
-from os.path import join, dirname, realpath, isfile
 
 
 class OAuth2Exception(Exception):
@@ -72,7 +71,6 @@ class OAuth2Base():
 
         self._oauth_token = token
         return token
-
 
     def _load_json_file(self, filename):
         """ Loads the configured JSON filename """
