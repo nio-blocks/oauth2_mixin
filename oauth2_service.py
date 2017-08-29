@@ -37,9 +37,10 @@ class OAuth2ServiceAccount(OAuth2Base):
         # try either of these:
         # https://accounts.google.com/o/oauth2/token
         # https://www.googleapis.com/oauth2/v4/token
-        cred = ServiceAccountCredentials.from_json_keyfile_dict(key_info,
-               token_uri='https://accounts.google.com/o/oauth2/token',
-               scopes=scope)
+        cred = ServiceAccountCredentials.from_json_keyfile_dict(
+            key_info,
+            token_uri='https://accounts.google.com/o/oauth2/token',
+            scopes=scope)
 
         # Request a new token from the token request URL
         token_url = self.get_oauth_url(token_endpoint)
